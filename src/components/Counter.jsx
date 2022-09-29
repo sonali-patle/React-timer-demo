@@ -1,37 +1,33 @@
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 
 const Counter = () => {
   const [count, setCount] = useState(0);
-  // const [isRunning, setIsRunning] = useState(false);
   const [incrementValue, setIncrementValue] = useState(1);
   const isRunning  = useRef(false);
 
-  // useEffect(() => {
-  //   if (isRunning.current) {
-  //     incrementCount();
-  //   }
-  // }, [isRunning.current])
-
-  const incrementCount = async () => {
-    await new Promise((resolve, reject) => {
+  const incrementCount = () => {
+    return new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve();
+        resolve(1);
       }, 1000);
-    });
-
-    setCount(count => count  + (incrementValue ? incrementValue : 1 ));
-
-    if (isRunning.current) {
-      incrementCount();
-    }
+    })
   }
 
+  const recursiveFun = () => {
+    incrementCount().then(() => {
+      setCount(count => count  + (incrementValue ? incrementValue : 1 ));
+  
+      if (isRunning.current) {
+        recursiveFun();
+      }
+    }).catch(err => console.log(err))
+  }
 
   const handleStartStopClick = (e) => {
     isRunning.current = !isRunning.current
 
     if (isRunning.current) {
-      incrementCount();
+      recursiveFun();
     }
   }
 
