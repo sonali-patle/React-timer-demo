@@ -1,9 +1,19 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const Counter = () => {
   const [count, setCount] = useState(0);
   const [incrementValue, setIncrementValue] = useState(1);
+  const [numbers, setNumbers] = useState([]);
   const isRunning  = useRef(false);
+
+  useEffect(() => {
+    if(count !== 0 && count % 10 == 0) {
+      setNumbers([...numbers, count])
+      console.log("numbers", numbers)
+      console.log("count", count)
+    }
+
+  }, [count])
 
   const incrementCount = () => {
     return new Promise((resolve, reject) => {
@@ -61,6 +71,19 @@ const Counter = () => {
             <button onClick={handleStartStopClick} className="btn btn-success me-3">Start/Stop</button>
           </div>
         </div>
+
+        <div className="row"> 
+          <div className="col">
+            <ul>
+              { 
+                numbers.map((number) => {
+                  return (<li key={number}>{number}</li>)
+                })
+              }
+            </ul>
+          </div>
+        </div>
+
       </div>
     </div>
     
